@@ -11,6 +11,17 @@
 
   <!-- 8th Wall engine (self-hosted). 8frame is 8th Wall's A-Frame fork. -->
   <script crossorigin="anonymous" src="./external/scripts/8frame-1.5.0.min.js"></script>
+  <script>
+    // Compatibility shim for aframe-physics-system 4.0.1: it uses three.js APIs that were
+    // removed in the newer three bundled with 8frame (Matrix4.getInverse, Quaternion.inverse).
+    // Restore them with their original in-place semantics.
+    if (!THREE.Matrix4.prototype.getInverse) {
+      THREE.Matrix4.prototype.getInverse = function (m) { return this.copy(m).invert() }
+    }
+    if (!THREE.Quaternion.prototype.inverse) {
+      THREE.Quaternion.prototype.inverse = function () { return this.invert() }
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@8thwall/xrextras@1/dist/xrextras.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/@8thwall/landing-page@1/dist/landing-page.js" crossorigin="anonymous"></script>
 
